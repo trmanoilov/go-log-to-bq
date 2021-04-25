@@ -13,8 +13,7 @@ func ParseDockerLogs(APP_ID string) chan int {
 	r := make(chan int)
 	go func() {
 
-		// t, err := tail.TailFile("/var/log/nginx/"+APP_ID+".access.log", tail.Config{Follow: true})
-		t, err := tail.TailFile("./test.txt", tail.Config{Follow: true})
+		t, err := tail.TailFile("/var/log/docker/"+APP_ID+".log", tail.Config{Follow: true})
 		if err == nil {
 			for line := range t.Lines {
 
@@ -36,7 +35,7 @@ func GenerateDockerLogs(APP_ID string) chan string {
 	r := make(chan string)
 	go func() {
 
-		out, err := exec.Command("./dockerlog", "&").Output()
+		out, err := exec.Command("./dockerlog", string(APP_ID), "&").Output()
 
 		if err != nil {
 			log.Fatal(err)

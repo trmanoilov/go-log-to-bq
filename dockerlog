@@ -1,0 +1,2 @@
+#!/bin/bash
+while true; do sudo docker stats nodeapp --no-stream | tail -n 1 >> /var/log/docker/$1.log; done

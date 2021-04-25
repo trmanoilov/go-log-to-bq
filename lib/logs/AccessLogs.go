@@ -18,8 +18,7 @@ func ParseAccessLogs(APP_ID string) chan int {
 	r := make(chan int)
 	go func() {
 
-		// t, err := tail.TailFile("/var/log/nginx/"+APP_ID+".access.log", tail.Config{Follow: true})
-		t, err := tail.TailFile("./da.txt", tail.Config{Follow: true})
+		t, err := tail.TailFile("/var/log/nginx/"+APP_ID+".access.log", tail.Config{Follow: true})
 		if err == nil {
 			for line := range t.Lines {
 
