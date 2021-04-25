@@ -31,30 +31,27 @@ func ParseAccessLogs(APP_ID string) chan int {
 
 				responseCode, err := strconv.Atoi(dataJSON[3])
 				if err != nil {
-					// handle error
-					// fmt.Println(err)
 					os.Exit(2)
 				}
+
+				request := dataJSON[2]
 
 				logEntry := Structs.AccessLogEntry{}
 
 				logEntry.Timestamp = timestamp
 				logEntry.App = APP_ID
-				logEntry.Request = dataJSON[2]
+				logEntry.Request = request
 				logEntry.Code = responseCode
 
 				logEntryJSON, err := json.Marshal(logEntry)
 				if err != nil {
 					// fmt.Println(err)
-				} else {
+				} else if request != "" {
 					BQ.InsertAccessLog(logEntryJSON)
 				}
 
 				if !isOkCode(responseCode) {
 					Slack.SendSlackNotification("Received a `" + strconv.Itoa(responseCode) + "` response code on: `" + APP_ID + "` app")
-					// if slackErr != nil {
-					// log.Fatal(slackErr)
-					// }
 				}
 
 			}
