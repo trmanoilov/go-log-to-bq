@@ -21,12 +21,12 @@ func main() {
 
 	flag.Parse()
 
-	fmt.Println("Let's start ...")
+	// fmt.Println("Let's start ...")
 	val2 := Logs.GenerateDockerLogs(*projectFlag)
 	val := Logs.ParseDockerLogs(*projectFlag)
 	val3 := Logs.ParseAccessLogs(*projectFlag)
 
-	fmt.Println("Done are running ...")
+	// fmt.Println("Done are running ...")
 	fmt.Println(<-val2)
 	fmt.Println(<-val3)
 	fmt.Println(<-val)
