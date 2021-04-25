@@ -29,7 +29,7 @@ func InsertAccessLog(logEntryJSON []byte) error {
 	defer client.Close()
 
 	// Prepare proper structure and parse JSON.
-	tickerData := Structs.LogEntry{}
+	tickerData := Structs.AccessLogEntry{}
 	decodeError := json.Unmarshal(logEntryJSON, &tickerData)
 	if decodeError != nil {
 		log.Fatal(decodeError)

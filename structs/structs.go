@@ -1,6 +1,6 @@
 package structs
 
-type LogEntry struct {
+type AccessLogEntry struct {
 	Timestamp string `bigquery:"timestamp" json:"timestamp"`
 	App       string `bigquery:"app" json:"app"`
 	Request   string `bigquery:"request" json:"request"`

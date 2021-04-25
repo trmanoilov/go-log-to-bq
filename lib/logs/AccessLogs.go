@@ -1,4 +1,4 @@
-package accesslogs
+package logs
 
 import (
 	"encoding/json"
@@ -37,7 +37,7 @@ func ParseAccessLogs(APP_ID string) chan int {
 					os.Exit(2)
 				}
 
-				logEntry := Structs.LogEntry{}
+				logEntry := Structs.AccessLogEntry{}
 
 				logEntry.Timestamp = timestamp
 				logEntry.App = APP_ID
