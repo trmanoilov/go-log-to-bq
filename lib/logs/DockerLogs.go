@@ -1,10 +1,15 @@
 package logs
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
+	BQ "nodeapps/logs/lib/bigquery"
+	Structs "nodeapps/logs/structs"
 	"os/exec"
+	"strconv"
 	"strings"
+	"time"
 
 	"github.com/hpcloud/tail"
 )
@@ -17,10 +22,28 @@ func ParseDockerLogs(APP_ID string) chan int {
 		if err == nil {
 			for line := range t.Lines {
 
-				stringified := fmt.Sprintf("%v", line)
-				words := strings.Fields(stringified)
+				// stringified := fmt.Sprintf("%v", line)
+				fields := strings.Fields(stringified)
 
-				fmt.Println(words[1], words[2], words[6], len(words)) // [one two three four] 4
+				currentTime := time.Now()
+
+				logEntry := Structs.UsageLogEntry{}
+
+				logEntry.Timestamp = currentTime.UTC().Local().Format("2006-01-02 15:04:05")
+				logEntry.App = APP_ID
+
+				cpu, _ := strconv.ParseFloat(fields[2], 64)
+				logEntry.CPU = cpu
+
+				memory, _ := strconv.ParseFloat(fields[6], 64)
+				logEntry.Memory = memory
+
+				logEntryJSON, err := json.Marshal(logEntry)
+				if err != nil {
+					// fmt.Println(err)
+				} else {
+					BQ.InsertAccessLog(logEntryJSON)
+				}
 
 			}
 		}
