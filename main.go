@@ -64,24 +64,22 @@ func DoneAsync() chan int {
 }
 
 func DoneAsync2() chan int {
+	APP_ID := os.Getenv("NODE_APP_ID")
+
 	r := make(chan int)
 	go func() {
 
-		t, err := tail.TailFile("./da.txt", tail.Config{Follow: true})
+		t, err := tail.TailFile("/var/log/nginx/"+APP_ID+".access.log", tail.Config{Follow: true})
 		if err == nil {
 			for line := range t.Lines {
 				// fmt.Println(line.Text)
 
-				// dataJson := `["1","2","3"]`
 				var dataJSON []string
 				_ = json.Unmarshal([]byte(line.Text), &dataJSON)
-				// fmt.Printf("Unmarshaled: %s", dataJSON[1])
 
 				format := "2006-01-02 15:04:05"
 				t, _ := time.Parse(time.RFC3339, dataJSON[1])
 				timestamp := t.UTC().Local().Format(format)
-
-				// fmt.Printf("time lud: %s", timestamp)
 
 				responseCode, err := strconv.Atoi(dataJSON[3])
 				if err != nil {
@@ -93,8 +91,8 @@ func DoneAsync2() chan int {
 				logEntry := Structs.LogEntry{}
 
 				logEntry.Timestamp = timestamp
-				logEntry.App = "nodeapp1"
-				logEntry.Request = "GET / HTTP/1.1"
+				logEntry.App = APP_ID
+				logEntry.Request = dataJSON[2]
 				logEntry.Code = responseCode
 
 				logEntryJSON, err := json.Marshal(logEntry)
@@ -119,7 +117,6 @@ func main() {
 	// Load env vars.
 	err := godotenv.Load()
 	if err != nil {
-		// log.Fatal("Error loading .env file")
 		log.Printf("Error loading .env file %v", err)
 	}
 
