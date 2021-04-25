@@ -22,7 +22,7 @@ func ParseDockerLogs(APP_ID string) chan int {
 		if err == nil {
 			for line := range t.Lines {
 
-				// stringified := fmt.Sprintf("%v", line)
+				stringified := fmt.Sprintf("%v", line)
 				fields := strings.Fields(stringified)
 
 				currentTime := time.Now()
