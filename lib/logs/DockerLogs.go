@@ -42,7 +42,7 @@ func ParseDockerLogs(APP_ID string) chan int {
 				if err != nil {
 					// fmt.Println(err)
 				} else {
-					BQ.InsertAccessLog(logEntryJSON)
+					BQ.InsertDockerLog(logEntryJSON)
 				}
 
 			}
