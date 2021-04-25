@@ -6,3 +6,7 @@ type LogEntry struct {
 	Request   string `bigquery:"request" json:"request"`
 	Code      int    `bigquery:"code" json:"code"`
 }
+
+type SlackRequestBody struct {
+	Text string `json:"text"`
+}
