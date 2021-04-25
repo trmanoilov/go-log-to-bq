@@ -62,7 +62,7 @@ func InsertDockerLog(logEntryJSON []byte) error {
 	defer client.Close()
 
 	// Prepare proper structure and parse JSON.
-	tickerData := Structs.AccessLogEntry{}
+	tickerData := Structs.UsageLogEntry{}
 	decodeError := json.Unmarshal(logEntryJSON, &tickerData)
 	if decodeError != nil {
 		log.Fatal(decodeError)
