@@ -32,10 +32,10 @@ func ParseDockerLogs(APP_ID string) chan int {
 				logEntry.Timestamp = currentTime.UTC().Local().Format("2006-01-02 15:04:05")
 				logEntry.App = APP_ID
 
-				cpu, _ := strconv.ParseFloat(fields[2], 64)
+				cpu, _ := strconv.ParseFloat(strings.Replace(fields[2], "%", "", -1), 64)
 				logEntry.CPU = cpu
 
-				memory, _ := strconv.ParseFloat(fields[6], 64)
+				memory, _ := strconv.ParseFloat(strings.Replace(fields[6], "%", "", -1), 64)
 				logEntry.Memory = memory
 
 				logEntryJSON, err := json.Marshal(logEntry)
