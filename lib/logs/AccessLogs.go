@@ -46,7 +46,7 @@ func ParseAccessLogs(APP_ID string) chan int {
 				logEntryJSON, err := json.Marshal(logEntry)
 				if err != nil {
 					// fmt.Println(err)
-				} else if request != "" {
+				} else {
 					BQ.InsertAccessLog(logEntryJSON)
 				}
 
